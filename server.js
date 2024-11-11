@@ -1,19 +1,9 @@
-require('dotenv').config();
 const express = require('express');
 const { Redis } = require('@upstash/redis');
 const OpenAI = require('openai');
 const app = express();
 
-const PORT = process.env.PORT || 3000;
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/apocalypse-journal';
-
-// Ensure tmp directory exists
-const dbDir = '/tmp';
-if (!fs.existsSync(dbDir)){
-    fs.mkdirSync(dbDir, { recursive: true });
-}
-
-// Initialize Redis (Vercel will automatically inject these environment variables)
+// Remove dotenv and initialize Redis and OpenAI directly
 const redis = new Redis({
     url: process.env.UPSTASH_REDIS_REST_URL,
     token: process.env.UPSTASH_REDIS_REST_TOKEN,
@@ -112,6 +102,7 @@ app.post('/api/entries/:id/vote', async (req, res) => {
     }
 });
 
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 }); 
