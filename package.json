@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "node node_modules/prisma/build.js generate"
   },
   "dependencies": {
     "@prisma/client": "^5.0.0",
