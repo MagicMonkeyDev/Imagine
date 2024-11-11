@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const { PrismaClient } = require('@prisma/client');
+const { Redis } = require('@upstash/redis');
 const OpenAI = require('openai');
 const app = express();
 
@@ -13,7 +13,12 @@ if (!fs.existsSync(dbDir)){
     fs.mkdirSync(dbDir, { recursive: true });
 }
 
-const prisma = new PrismaClient();
+// Initialize Redis (Vercel will automatically inject these environment variables)
+const redis = new Redis({
+    url: process.env.UPSTASH_REDIS_REST_URL,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN,
+});
+
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
@@ -23,24 +28,22 @@ app.use(express.json());
 
 // Get popular entries
 app.get('/api/entries/popular', async (req, res) => {
-    const entries = await prisma.entry.findMany({
-        orderBy: {
-            votes: 'desc'
-        },
-        take: 10
-    });
-    res.json(entries);
+    try {
+        const entries = await redis.zrange('popular_entries', 0, 9, { rev: true });
+        res.json(entries);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch entries' });
+    }
 });
 
 // Get recent entries
 app.get('/api/entries/recent', async (req, res) => {
-    const entries = await prisma.entry.findMany({
-        orderBy: {
-            timestamp: 'desc'
-        },
-        take: 10
-    });
-    res.json(entries);
+    try {
+        const entries = await redis.lrange('recent_entries', 0, 9);
+        res.json(entries);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch entries' });
+    }
 });
 
 // Generate new entry
@@ -57,11 +60,21 @@ app.post('/api/entries/generate', async (req, res) => {
             }]
         });
 
-        const entry = await prisma.entry.create({
-            data: {
-                content: completion.choices[0].message.content
-            }
-        });
+        const entry = {
+            id: Date.now().toString(),
+            content: completion.choices[0].message.content,
+            timestamp: new Date().toISOString(),
+            votes: 0
+        };
+
+        // Save to recent entries
+        await redis.lpush('recent_entries', entry);
+        // Trim to keep only last 100 entries
+        await redis.ltrim('recent_entries', 0, 99);
+
+        // Add to sorted set for popular entries
+        await redis.zadd('popular_entries', { score: 0, member: JSON.stringify(entry) });
+
         res.json(entry);
     } catch (error) {
         console.error('Error:', error);
@@ -69,29 +82,33 @@ app.post('/api/entries/generate', async (req, res) => {
     }
 });
 
-// Vote
+// Vote on entry
 app.post('/api/entries/:id/vote', async (req, res) => {
     try {
-        const entry = await prisma.entry.findUnique({
-            where: {
-                id: parseInt(req.params.id)
-            }
-        });
-        if (!entry) {
-            return res.status(404).json({ error: 'Entry not found' });
+        const { id } = req.params;
+        const { value } = req.body;
+        
+        // Update vote in sorted set
+        const entry = await redis.zrange('popular_entries', 0, -1, { 
+            withScores: true,
+            by: 'score'
+        }).find(e => JSON.parse(e).id === id);
+
+        if (entry) {
+            const updatedEntry = {
+                ...JSON.parse(entry),
+                votes: (JSON.parse(entry).votes || 0) + value
+            };
+            
+            await redis.zadd('popular_entries', { 
+                score: updatedEntry.votes,
+                member: JSON.stringify(updatedEntry)
+            });
         }
-        const updatedEntry = await prisma.entry.update({
-            where: {
-                id: entry.id
-            },
-            data: {
-                votes: entry.votes + req.body.value
-            }
-        });
-        res.json(updatedEntry);
+
+        res.json({ success: true });
     } catch (error) {
-        console.error('Failed to vote:', error);
-        res.status(500).json({ error: 'Failed to vote' });
+        res.status(500).json({ error: 'Failed to update vote' });
     }
 });
 
