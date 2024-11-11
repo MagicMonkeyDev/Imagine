@@ -2,10 +2,18 @@ require('dotenv').config();
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const OpenAI = require('openai');
+const fs = require('fs');
+const path = require('path');
 const app = express();
 
 const PORT = process.env.PORT || 3000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/apocalypse-journal';
+
+// Ensure tmp directory exists
+const dbDir = '/tmp';
+if (!fs.existsSync(dbDir)){
+    fs.mkdirSync(dbDir, { recursive: true });
+}
 
 const prisma = new PrismaClient();
 const openai = new OpenAI({
