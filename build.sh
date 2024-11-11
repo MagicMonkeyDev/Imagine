@@ -1,4 +1,3 @@
-#!/bin/bash
+#!/usr/bin/env bash
 npm install
-chmod +x ./node_modules/.bin/prisma
-npm run build 
+NODE_OPTIONS="--experimental-warning-disable" ./node_modules/.bin/prisma generate 
