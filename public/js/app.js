@@ -135,4 +135,109 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.querySelectorAll('.cyber-text').forEach(typeEffect);
+
+    // Particle background
+    const canvas = document.getElementById('canvas')
+    const ctx = canvas.getContext('2d')
+
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+
+    const PARTICLE_COUNT = 400
+    const CONNECT_DISTANCE = 80
+    const FORCE_DISTANCE = 140
+
+    const mouse = {
+        x: 0.5 * window.innerWidth,
+        y: 0.5 * window.innerHeight
+    }
+
+    let rafId = null
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width
+            this.y = Math.random() * canvas.height
+            this.vx = Math.random() * 2 - 1
+            this.vy = Math.random() * 2 - 1
+            this.radius = Math.random() * 1.5 + 0.5
+        }
+
+        update() {
+            this.x += this.vx
+            this.y += this.vy
+
+            if (this.x < 0 || this.x > canvas.width) this.vx *= -1
+            if (this.y < 0 || this.y > canvas.height) this.vy *= -1
+
+            // Mouse repulsion
+            const dx = this.x - mouse.x
+            const dy = this.y - mouse.y
+            const distance = Math.sqrt(dx * dx + dy * dy)
+
+            if (distance < FORCE_DISTANCE) {
+                const force = (FORCE_DISTANCE - distance) / FORCE_DISTANCE
+                this.vx += (dx / distance) * force * 0.6
+                this.vy += (dy / distance) * force * 0.6
+            }
+
+            // Speed limit
+            const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy)
+            if (speed > 2) {
+                this.vx = (this.vx / speed) * 2
+                this.vy = (this.vy / speed) * 2
+            }
+        }
+
+        draw() {
+            ctx.beginPath()
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
+            ctx.closePath()
+            ctx.fill()
+        }
+    }
+
+    const particles = Array(PARTICLE_COUNT).fill().map(() => new Particle())
+
+    function animate() {
+        ctx.fillStyle = '#0a0a0a'
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+        ctx.fillStyle = '#00ff9d'
+        particles.forEach(particle => {
+            particle.update()
+            particle.draw()
+
+            particles.forEach(otherParticle => {
+                const dx = particle.x - otherParticle.x
+                const dy = particle.y - otherParticle.y
+                const distance = Math.sqrt(dx * dx + dy * dy)
+
+                if (distance < CONNECT_DISTANCE) {
+                    ctx.strokeStyle = `rgba(0, 255, 157, ${1 - distance / CONNECT_DISTANCE})`
+                    ctx.lineWidth = 1
+                    ctx.beginPath()
+                    ctx.moveTo(particle.x, particle.y)
+                    ctx.lineTo(otherParticle.x, otherParticle.y)
+                    ctx.stroke()
+                }
+            })
+        })
+
+        rafId = requestAnimationFrame(animate)
+    }
+
+    // Event listeners
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth
+        canvas.height = window.innerHeight
+    })
+
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX
+        mouse.y = e.clientY
+    })
+
+    // Start animation
+    animate()
 }); 
