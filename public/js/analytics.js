@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Chart.js default configuration
+    Chart.defaults.color = '#ffffff';
+    Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)';
+    
     // Price Action Chart
     const priceCtx = document.getElementById('priceChart').getContext('2d');
     new Chart(priceCtx, {
@@ -17,18 +21,38 @@ document.addEventListener('DOMContentLoaded', () => {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            },
             plugins: {
                 legend: {
                     display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(16, 16, 23, 0.9)',
+                    borderColor: '#00ff9d',
+                    borderWidth: 1,
+                    titleColor: '#00ff9d',
+                    titleFont: {
+                        family: 'Orbitron'
+                    },
+                    bodyFont: {
+                        family: 'Rajdhani'
+                    }
                 }
             },
             scales: {
                 y: {
+                    beginAtZero: false,
                     grid: {
                         color: 'rgba(255, 255, 255, 0.1)'
                     },
                     ticks: {
-                        color: '#ffffff'
+                        color: '#ffffff',
+                        font: {
+                            family: 'Rajdhani'
+                        }
                     }
                 },
                 x: {
@@ -36,7 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         color: 'rgba(255, 255, 255, 0.1)'
                     },
                     ticks: {
-                        color: '#ffffff'
+                        color: '#ffffff',
+                        font: {
+                            family: 'Rajdhani'
+                        },
+                        maxRotation: 0
                     }
                 }
             }
@@ -65,7 +93,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 legend: {
                     position: 'bottom',
                     labels: {
-                        color: '#ffffff'
+                        color: '#ffffff',
+                        font: {
+                            family: 'Rajdhani'
+                        },
+                        padding: 20
                     }
                 }
             }
@@ -100,15 +132,21 @@ document.addEventListener('DOMContentLoaded', () => {
                         color: 'rgba(255, 255, 255, 0.1)'
                     },
                     ticks: {
-                        color: '#ffffff'
+                        color: '#ffffff',
+                        font: {
+                            family: 'Rajdhani'
+                        }
                     }
                 },
                 x: {
                     grid: {
-                        color: 'rgba(255, 255, 255, 0.1)'
+                        display: false
                     },
                     ticks: {
-                        color: '#ffffff'
+                        color: '#ffffff',
+                        font: {
+                            family: 'Rajdhani'
+                        }
                     }
                 }
             }

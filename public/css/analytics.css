@@ -129,10 +129,18 @@ body {
     border: 1px solid rgba(0, 255, 157, 0.2);
     border-radius: 10px;
     padding: 20px;
+    height: 400px;
 }
 
 .chart-card.large {
     grid-column: 1 / -1;
+    height: 500px;
+}
+
+.chart-container {
+    position: relative;
+    height: calc(100% - 40px);
+    width: 100%;
 }
 
 .chart-card h3 {
@@ -142,6 +150,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 20px;
 }
 
 .time-frame {
