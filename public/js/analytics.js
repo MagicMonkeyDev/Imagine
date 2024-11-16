@@ -1,182 +1,105 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Chart.js default configuration
-    Chart.defaults.color = '#ffffff';
-    Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)';
-    
-    // Price Action Chart
-    const priceCtx = document.getElementById('priceChart').getContext('2d');
-    new Chart(priceCtx, {
-        type: 'line',
-        data: {
-            labels: Array.from({length: 24}, (_, i) => `${i}:00`),
-            datasets: [{
-                label: 'Price',
-                data: generatePriceData(24),
-                borderColor: '#00ff9d',
-                backgroundColor: 'rgba(0, 255, 157, 0.1)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            interaction: {
-                intersect: false,
-                mode: 'index'
-            },
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(16, 16, 23, 0.9)',
-                    borderColor: '#00ff9d',
-                    borderWidth: 1,
-                    titleColor: '#00ff9d',
-                    titleFont: {
-                        family: 'Orbitron'
-                    },
-                    bodyFont: {
-                        family: 'Rajdhani'
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: false,
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.1)'
-                    },
-                    ticks: {
-                        color: '#ffffff',
-                        font: {
-                            family: 'Rajdhani'
-                        }
-                    }
-                },
-                x: {
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.1)'
-                    },
-                    ticks: {
-                        color: '#ffffff',
-                        font: {
-                            family: 'Rajdhani'
-                        },
-                        maxRotation: 0
-                    }
-                }
-            }
-        }
-    });
+const DUNE_API_KEY = 'YOUR_API_KEY'; // Replace with your Dune API key
+const DUNE_API_BASE = 'https://api.dune.com/api/v1';
 
-    // Volume Distribution Chart
-    const volumeCtx = document.getElementById('volumeChart').getContext('2d');
-    new Chart(volumeCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['BTC', 'ETH', 'Others'],
-            datasets: [{
-                data: [45, 35, 20],
-                backgroundColor: [
-                    '#00ff9d',
-                    '#ff00ff',
-                    '#00ffff'
-                ]
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        color: '#ffffff',
-                        font: {
-                            family: 'Rajdhani'
-                        },
-                        padding: 20
-                    }
-                }
-            }
-        }
-    });
+class DuneAPI {
+    constructor(apiKey) {
+        this.apiKey = apiKey;
+        this.headers = {
+            'x-dune-api-key': apiKey
+        };
+    }
 
-    // Success Rate Chart
-    const successCtx = document.getElementById('successChart').getContext('2d');
-    new Chart(successCtx, {
-        type: 'bar',
-        data: {
-            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            datasets: [{
-                label: 'Success Rate',
-                data: [85, 92, 88, 95, 89, 91, 87],
-                backgroundColor: '#00ff9d'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 100,
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.1)'
-                    },
-                    ticks: {
-                        color: '#ffffff',
-                        font: {
-                            family: 'Rajdhani'
-                        }
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false
-                    },
-                    ticks: {
-                        color: '#ffffff',
-                        font: {
-                            family: 'Rajdhani'
-                        }
-                    }
-                }
-            }
+    async fetchQuery(queryId) {
+        try {
+            // Execute query
+            const executeResponse = await fetch(`${DUNE_API_BASE}/query/${queryId}/execute`, {
+                method: 'POST',
+                headers: this.headers
+            });
+            const executeData = await executeResponse.json();
+            
+            // Get results
+            const resultResponse = await fetch(`${DUNE_API_BASE}/execution/${executeData.execution_id}/results`, {
+                headers: this.headers
+            });
+            return await resultResponse.json();
+        } catch (error) {
+            console.error('Error fetching Dune data:', error);
+            return null;
         }
-    });
+    }
+}
 
-    // Helper function to generate random price data
-    function generatePriceData(points) {
-        let basePrice = 100;
-        return Array.from({length: points}, () => {
-            basePrice += (Math.random() - 0.5) * 10;
-            return basePrice;
+document.addEventListener('DOMContentLoaded', async () => {
+    const duneAPI = new DuneAPI(DUNE_API_KEY);
+
+    // Fetch and update dashboard data
+    async function updateDashboard() {
+        // Fetch Solana metrics
+        const solanaMetrics = await duneAPI.fetchQuery('YOUR_SOLANA_QUERY_ID');
+        if (solanaMetrics) {
+            updateSolanaStats(solanaMetrics);
+        }
+
+        // Fetch Pump.fun activity
+        const pumpActivity = await duneAPI.fetchQuery('YOUR_PUMP_ACTIVITY_QUERY_ID');
+        if (pumpActivity) {
+            updatePumpActivity(pumpActivity);
+        }
+
+        // Update charts
+        updateCharts();
+    }
+
+    function updateSolanaStats(data) {
+        // Update header stats with real data
+        document.getElementById('sol-price').textContent = `$${data.sol_price.toFixed(2)}`;
+        document.getElementById('sol-volume').textContent = `${data.volume.toLocaleString()} SOL`;
+        document.getElementById('active-traders').textContent = data.active_traders.toLocaleString();
+        document.getElementById('successful-pumps').textContent = data.successful_pumps;
+        
+        // Update change indicators
+        updateChangeIndicator('sol-change', data.price_change_24h);
+        updateChangeIndicator('volume-change', data.volume_change_24h);
+        updateChangeIndicator('traders-change', data.traders_change_24h);
+        updateChangeIndicator('pump-rate', data.pump_success_rate);
+    }
+
+    function updateChangeIndicator(elementId, changeValue) {
+        const element = document.getElementById(elementId);
+        const isPositive = changeValue > 0;
+        element.textContent = `${isPositive ? '+' : ''}${changeValue.toFixed(2)}%`;
+        element.className = `stat-change ${isPositive ? 'positive' : 'negative'}`;
+    }
+
+    function updatePumpActivity(data) {
+        const activityList = document.getElementById('pump-activity');
+        activityList.innerHTML = ''; // Clear existing items
+
+        data.recent_pumps.forEach(pump => {
+            const activityItem = document.createElement('div');
+            activityItem.className = `activity-item ${pump.success ? 'success' : 'failed'}`;
+            activityItem.innerHTML = `
+                <div class="activity-icon">
+                    <i class="fas fa-${pump.success ? 'arrow-up' : 'arrow-down'}"></i>
+                </div>
+                <div class="activity-details">
+                    <h4>${pump.token_symbol}</h4>
+                    <p>${pump.price_change}% in ${pump.duration} minutes</p>
+                    <span class="activity-time">${formatTimeAgo(pump.timestamp)}</span>
+                </div>
+                <div class="activity-stats">
+                    <span class="volume">Vol: ${pump.volume} SOL</span>
+                    <span class="participants">Users: ${pump.participants}</span>
+                </div>
+            `;
+            activityList.appendChild(activityItem);
         });
     }
 
-    // Animate stats on load
-    const stats = document.querySelectorAll('.stat-value');
-    stats.forEach(stat => {
-        const value = parseFloat(stat.dataset.value);
-        if (value) {
-            let current = 0;
-            const increment = value / 100;
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= value) {
-                    clearInterval(timer);
-                    current = value;
-                }
-                stat.textContent = Math.floor(current).toLocaleString();
-            }, 10);
-        }
-    });
+    // Initialize dashboard
+    await updateDashboard();
+    
+    // Update every 5 minutes
+    setInterval(updateDashboard, 5 * 60 * 1000);
 }); 

@@ -26,12 +26,12 @@
         <div class="header-stats">
             <div class="stat-card">
                 <div class="stat-icon">
-                    <i class="fas fa-users"></i>
+                    <i class="fab fa-solana"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>Total Users</h3>
-                    <span class="stat-value" data-value="24891">24,891</span>
-                    <span class="stat-change positive">+12.5%</span>
+                    <h3>SOL Price</h3>
+                    <span class="stat-value" id="sol-price">Loading...</span>
+                    <span class="stat-change" id="sol-change">Loading...</span>
                 </div>
             </div>
             <div class="stat-card">
@@ -39,9 +39,19 @@
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>Total Volume</h3>
-                    <span class="stat-value">$1.2M</span>
-                    <span class="stat-change positive">+8.3%</span>
+                    <h3>24h Volume (SOL)</h3>
+                    <span class="stat-value" id="sol-volume">Loading...</span>
+                    <span class="stat-change" id="volume-change">Loading...</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Active Traders</h3>
+                    <span class="stat-value" id="active-traders">Loading...</span>
+                    <span class="stat-change" id="traders-change">Loading...</span>
                 </div>
             </div>
             <div class="stat-card">
@@ -49,69 +59,45 @@
                     <i class="fas fa-rocket"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>Active Pumps</h3>
-                    <span class="stat-value">7</span>
-                    <span class="stat-change positive">+2</span>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-coins"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>Success Rate</h3>
-                    <span class="stat-value">89.2%</span>
-                    <span class="stat-change positive">+5.7%</span>
+                    <h3>Successful Pumps</h3>
+                    <span class="stat-value" id="successful-pumps">Loading...</span>
+                    <span class="stat-change" id="pump-rate">Loading...</span>
                 </div>
             </div>
         </div>
 
-        <!-- Main Charts -->
+        <!-- Charts Grid -->
         <div class="charts-grid">
-            <!-- Price Action Chart -->
+            <!-- Token Performance Chart -->
             <div class="chart-card large">
-                <h3>Price Action <span class="time-frame">24h</span></h3>
+                <h3>Token Performance <span class="time-frame">24h</span></h3>
                 <div class="chart-container">
-                    <canvas id="priceChart"></canvas>
+                    <canvas id="tokenChart"></canvas>
                 </div>
             </div>
 
-            <!-- Volume Distribution -->
+            <!-- Volume by Token -->
             <div class="chart-card">
-                <h3>Volume Distribution</h3>
+                <h3>Volume Distribution by Token</h3>
                 <div class="chart-container">
                     <canvas id="volumeChart"></canvas>
                 </div>
             </div>
 
-            <!-- Success Rate -->
+            <!-- Trader Activity -->
             <div class="chart-card">
-                <h3>Success Rate Trend</h3>
+                <h3>Trader Activity</h3>
                 <div class="chart-container">
-                    <canvas id="successChart"></canvas>
+                    <canvas id="activityChart"></canvas>
                 </div>
             </div>
         </div>
 
-        <!-- Recent Activity -->
+        <!-- Recent Pumps -->
         <div class="recent-activity">
             <h3>Recent Pump Activity</h3>
-            <div class="activity-list">
-                <div class="activity-item success">
-                    <div class="activity-icon">
-                        <i class="fas fa-arrow-up"></i>
-                    </div>
-                    <div class="activity-details">
-                        <h4>PEPE/USDT</h4>
-                        <p>+127.5% in 4 minutes</p>
-                        <span class="activity-time">2 hours ago</span>
-                    </div>
-                    <div class="activity-stats">
-                        <span class="volume">Vol: $245K</span>
-                        <span class="participants">Users: 1.2K</span>
-                    </div>
-                </div>
-                <!-- More activity items... -->
+            <div class="activity-list" id="pump-activity">
+                <!-- Activity items will be populated by JavaScript -->
             </div>
         </div>
     </div>
