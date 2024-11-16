@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pump Analytics Dashboard</title>
+    <link rel="stylesheet" href="/css/analytics.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="background">
+        <div class="cyber-grid"></div>
+        <div class="glow-effect"></div>
+    </div>
+
+    <!-- Back Button -->
+    <a href="/" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back to Dashboard</span>
+    </a>
+
+    <div class="analytics-container">
+        <!-- Header Stats -->
+        <div class="header-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Total Users</h3>
+                    <span class="stat-value" data-value="24891">24,891</span>
+                    <span class="stat-change positive">+12.5%</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Total Volume</h3>
+                    <span class="stat-value">$1.2M</span>
+                    <span class="stat-change positive">+8.3%</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Active Pumps</h3>
+                    <span class="stat-value">7</span>
+                    <span class="stat-change positive">+2</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Success Rate</h3>
+                    <span class="stat-value">89.2%</span>
+                    <span class="stat-change positive">+5.7%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Charts -->
+        <div class="charts-grid">
+            <!-- Price Action Chart -->
+            <div class="chart-card large">
+                <h3>Price Action <span class="time-frame">24h</span></h3>
+                <canvas id="priceChart"></canvas>
+            </div>
+
+            <!-- Volume Distribution -->
+            <div class="chart-card">
+                <h3>Volume Distribution</h3>
+                <canvas id="volumeChart"></canvas>
+            </div>
+
+            <!-- Success Rate -->
+            <div class="chart-card">
+                <h3>Success Rate Trend</h3>
+                <canvas id="successChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="recent-activity">
+            <h3>Recent Pump Activity</h3>
+            <div class="activity-list">
+                <div class="activity-item success">
+                    <div class="activity-icon">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h4>PEPE/USDT</h4>
+                        <p>+127.5% in 4 minutes</p>
+                        <span class="activity-time">2 hours ago</span>
+                    </div>
+                    <div class="activity-stats">
+                        <span class="volume">Vol: $245K</span>
+                        <span class="participants">Users: 1.2K</span>
+                    </div>
+                </div>
+                <!-- More activity items... -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/analytics.js"></script>
+</body>
+</html> 
