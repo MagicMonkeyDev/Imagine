@@ -9,105 +9,92 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
+    <div class="dashboard-container">
         <!-- Sidebar -->
         <nav class="sidebar">
             <div class="logo">
-                <span class="cyber-text">AI NEXUS</span>
+                <h1>AI NEXUS</h1>
             </div>
-            <ul class="nav-links">
-                <li class="active">
-                    <a href="#dashboard"><i class="fas fa-home"></i> Dashboard</a>
-                </li>
-                <li>
-                    <a href="#tokens"><i class="fas fa-coins"></i> Token Launch</a>
-                </li>
-                <li>
-                    <a href="#analytics"><i class="fas fa-chart-line"></i> Analytics</a>
-                </li>
-                <li>
-                    <a href="#security"><i class="fas fa-shield-alt"></i> Security</a>
-                </li>
-                <li>
-                    <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
-                </li>
+            <ul class="nav-menu">
+                <li class="active"><a href="#"><i class="fas fa-home"></i>Dashboard</a></li>
+                <li><a href="#"><i class="fas fa-robot"></i>AI Models</a></li>
+                <li><a href="#"><i class="fas fa-coins"></i>Tokens</a></li>
+                <li><a href="#"><i class="fas fa-chart-line"></i>Analytics</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i>Settings</a></li>
             </ul>
         </nav>
 
         <!-- Main Content -->
         <main class="main-content">
-            <header>
-                <div class="search-bar">
+            <header class="top-bar">
+                <div class="search">
                     <i class="fas fa-search"></i>
                     <input type="text" placeholder="Search...">
                 </div>
-                <div class="user-profile">
-                    <span class="notification-badge">
+                <div class="user-menu">
+                    <div class="notifications">
                         <i class="fas fa-bell"></i>
                         <span class="badge">3</span>
-                    </span>
-                    <img src="https://via.placeholder.com/40" alt="Profile" class="profile-img">
+                    </div>
+                    <div class="profile">
+                        <img src="https://via.placeholder.com/32" alt="Profile">
+                    </div>
                 </div>
             </header>
 
             <div class="dashboard-grid">
-                <!-- Quick Stats -->
+                <!-- Stats Overview -->
                 <div class="card stats-card">
-                    <h3>AI Performance</h3>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <div class="stat-value">98.7%</div>
-                            <div class="stat-label">Accuracy</div>
+                    <h2>AI Performance</h2>
+                    <div class="stats">
+                        <div class="stat">
+                            <h3>98.7%</h3>
+                            <p>Accuracy</p>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-value">1.2ms</div>
-                            <div class="stat-label">Response Time</div>
+                        <div class="stat">
+                            <h3>1.2ms</h3>
+                            <p>Response Time</p>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-value">45K</div>
-                            <div class="stat-label">Requests</div>
+                        <div class="stat">
+                            <h3>45K</h3>
+                            <p>Requests</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Token Launch Panel -->
+                <!-- Token Launch -->
                 <div class="card launch-card">
-                    <h3>Token Launch</h3>
-                    <div class="launch-status">
-                        <div class="progress-ring">
-                            <svg>
-                                <circle class="progress-ring-circle" cx="60" cy="60" r="54"/>
-                            </svg>
-                            <span class="progress-text">87%</span>
+                    <h2>Token Launch</h2>
+                    <div class="launch-content">
+                        <div class="progress-circle">
+                            <span class="percentage">87%</span>
                         </div>
-                        <button class="cyber-button">
-                            <span>LAUNCH AI TOKEN</span>
-                        </button>
+                        <button class="launch-btn">Launch Token</button>
                     </div>
                 </div>
 
                 <!-- Activity Feed -->
                 <div class="card activity-card">
-                    <h3>Recent Activity</h3>
-                    <div class="activity-feed">
+                    <h2>Recent Activity</h2>
+                    <div class="activity-list">
                         <div class="activity-item">
                             <i class="fas fa-robot"></i>
-                            <div class="activity-content">
+                            <div>
                                 <p>New AI Model Deployed</p>
                                 <span>2 minutes ago</span>
                             </div>
                         </div>
                         <div class="activity-item">
-                            <i class="fas fa-code-branch"></i>
-                            <div class="activity-content">
+                            <i class="fas fa-code"></i>
+                            <div>
                                 <p>System Update Complete</p>
                                 <span>15 minutes ago</span>
                             </div>
                         </div>
                         <div class="activity-item">
                             <i class="fas fa-shield-alt"></i>
-                            <div class="activity-content">
-                                <p>Security Scan Completed</p>
+                            <div>
+                                <p>Security Check Passed</p>
                                 <span>1 hour ago</span>
                             </div>
                         </div>
@@ -116,11 +103,11 @@
 
                 <!-- System Status -->
                 <div class="card status-card">
-                    <h3>System Status</h3>
+                    <h2>System Status</h2>
                     <div class="status-grid">
                         <div class="status-item active">
                             <i class="fas fa-server"></i>
-                            <span>API</span>
+                            <span>API Services</span>
                         </div>
                         <div class="status-item active">
                             <i class="fas fa-database"></i>
