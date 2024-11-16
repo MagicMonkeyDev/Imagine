@@ -1,105 +1,174 @@
-const DUNE_API_KEY = 'ur7vfGnQv0udOnanEUPfcI8nFMT4IieK'; // Replace with your Dune API key
-const DUNE_API_BASE = 'https://api.dune.com/api/v1';
+document.addEventListener('DOMContentLoaded', () => {
+    // Mock data for charts
+    const mockPriceData = {
+        labels: Array.from({length: 24}, (_, i) => `${i}:00`),
+        prices: Array.from({length: 24}, () => 90 + Math.random() * 20)
+    };
 
-class DuneAPI {
-    constructor(apiKey) {
-        this.apiKey = apiKey;
-        this.headers = {
-            'x-dune-api-key': apiKey
-        };
-    }
-
-    async fetchQuery(queryId) {
-        try {
-            // Execute query
-            const executeResponse = await fetch(`${DUNE_API_BASE}/query/${queryId}/execute`, {
-                method: 'POST',
-                headers: this.headers
-            });
-            const executeData = await executeResponse.json();
-            
-            // Get results
-            const resultResponse = await fetch(`${DUNE_API_BASE}/execution/${executeData.execution_id}/results`, {
-                headers: this.headers
-            });
-            return await resultResponse.json();
-        } catch (error) {
-            console.error('Error fetching Dune data:', error);
-            return null;
+    // Price Action Chart
+    const priceCtx = document.getElementById('tokenChart').getContext('2d');
+    new Chart(priceCtx, {
+        type: 'line',
+        data: {
+            labels: mockPriceData.labels,
+            datasets: [{
+                label: 'Token Price',
+                data: mockPriceData.prices,
+                borderColor: '#00ff9d',
+                backgroundColor: 'rgba(0, 255, 157, 0.1)',
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#ffffff'
+                    }
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#ffffff',
+                        maxRotation: 0
+                    }
+                }
+            }
         }
-    }
-}
+    });
 
-document.addEventListener('DOMContentLoaded', async () => {
-    const duneAPI = new DuneAPI(DUNE_API_KEY);
-
-    // Fetch and update dashboard data
-    async function updateDashboard() {
-        // Fetch Solana metrics
-        const solanaMetrics = await duneAPI.fetchQuery('YOUR_SOLANA_QUERY_ID');
-        if (solanaMetrics) {
-            updateSolanaStats(solanaMetrics);
+    // Volume Distribution Chart
+    const volumeCtx = document.getElementById('volumeChart').getContext('2d');
+    new Chart(volumeCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['BONK', 'WEN', 'MYRO', 'Others'],
+            datasets: [{
+                data: [40, 25, 20, 15],
+                backgroundColor: [
+                    '#00ff9d',
+                    '#ff00ff',
+                    '#00ffff',
+                    '#ffaa00'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#ffffff',
+                        padding: 20
+                    }
+                }
+            }
         }
+    });
 
-        // Fetch Pump.fun activity
-        const pumpActivity = await duneAPI.fetchQuery('YOUR_PUMP_ACTIVITY_QUERY_ID');
-        if (pumpActivity) {
-            updatePumpActivity(pumpActivity);
+    // Trader Activity Chart
+    const activityCtx = document.getElementById('activityChart').getContext('2d');
+    new Chart(activityCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Active Traders',
+                data: [1200, 1450, 1320, 1850, 1640, 1720, 1590],
+                backgroundColor: '#00ff9d'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#ffffff'
+                    }
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#ffffff'
+                    }
+                }
+            }
         }
+    });
 
-        // Update charts
-        updateCharts();
-    }
+    // Add recent activity items
+    const activityList = document.querySelector('.activity-list');
+    const recentActivities = [
+        {
+            token: 'BONK/SOL',
+            change: '+127.5%',
+            time: '2 hours ago',
+            volume: '245K',
+            users: '1.2K',
+            success: true
+        },
+        {
+            token: 'WEN/SOL',
+            change: '+85.2%',
+            time: '4 hours ago',
+            volume: '180K',
+            users: '950',
+            success: true
+        },
+        {
+            token: 'MYRO/SOL',
+            change: '+92.8%',
+            time: '6 hours ago',
+            volume: '210K',
+            users: '1.1K',
+            success: true
+        }
+    ];
 
-    function updateSolanaStats(data) {
-        // Update header stats with real data
-        document.getElementById('sol-price').textContent = `$${data.sol_price.toFixed(2)}`;
-        document.getElementById('sol-volume').textContent = `${data.volume.toLocaleString()} SOL`;
-        document.getElementById('active-traders').textContent = data.active_traders.toLocaleString();
-        document.getElementById('successful-pumps').textContent = data.successful_pumps;
-        
-        // Update change indicators
-        updateChangeIndicator('sol-change', data.price_change_24h);
-        updateChangeIndicator('volume-change', data.volume_change_24h);
-        updateChangeIndicator('traders-change', data.traders_change_24h);
-        updateChangeIndicator('pump-rate', data.pump_success_rate);
-    }
-
-    function updateChangeIndicator(elementId, changeValue) {
-        const element = document.getElementById(elementId);
-        const isPositive = changeValue > 0;
-        element.textContent = `${isPositive ? '+' : ''}${changeValue.toFixed(2)}%`;
-        element.className = `stat-change ${isPositive ? 'positive' : 'negative'}`;
-    }
-
-    function updatePumpActivity(data) {
-        const activityList = document.getElementById('pump-activity');
-        activityList.innerHTML = ''; // Clear existing items
-
-        data.recent_pumps.forEach(pump => {
-            const activityItem = document.createElement('div');
-            activityItem.className = `activity-item ${pump.success ? 'success' : 'failed'}`;
-            activityItem.innerHTML = `
-                <div class="activity-icon">
-                    <i class="fas fa-${pump.success ? 'arrow-up' : 'arrow-down'}"></i>
-                </div>
-                <div class="activity-details">
-                    <h4>${pump.token_symbol}</h4>
-                    <p>${pump.price_change}% in ${pump.duration} minutes</p>
-                    <span class="activity-time">${formatTimeAgo(pump.timestamp)}</span>
-                </div>
-                <div class="activity-stats">
-                    <span class="volume">Vol: ${pump.volume} SOL</span>
-                    <span class="participants">Users: ${pump.participants}</span>
-                </div>
-            `;
-            activityList.appendChild(activityItem);
-        });
-    }
-
-    // Initialize dashboard
-    await updateDashboard();
-    
-    // Update every 5 minutes
-    setInterval(updateDashboard, 5 * 60 * 1000);
+    recentActivities.forEach(activity => {
+        const activityItem = document.createElement('div');
+        activityItem.className = `activity-item ${activity.success ? 'success' : 'failed'}`;
+        activityItem.innerHTML = `
+            <div class="activity-icon">
+                <i class="fas fa-arrow-up"></i>
+            </div>
+            <div class="activity-details">
+                <h4>${activity.token}</h4>
+                <p>${activity.change} in 4 minutes</p>
+                <span class="activity-time">${activity.time}</span>
+            </div>
+            <div class="activity-stats">
+                <span class="volume">Vol: ${activity.volume}</span>
+                <span class="participants">Users: ${activity.users}</span>
+            </div>
+        `;
+        activityList.appendChild(activityItem);
+    });
 }); 
