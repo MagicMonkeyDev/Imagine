@@ -46,7 +46,7 @@ header h1 {
     color: var(--primary);
     font-size: 2.5rem;
     letter-spacing: 3px;
-    text-shadow: 0 0 10px var(--primary);
+    text-shadow: 0 0 20px rgba(0, 255, 157, 0.5);
 }
 
 .features-grid {
@@ -58,12 +58,12 @@ header h1 {
 
 .feature-card {
     position: relative;
-    background: rgba(16, 16, 23, 0.7);
+    background: rgba(16, 16, 23, 0.8);
     backdrop-filter: blur(10px);
     border-radius: 15px;
     padding: 2rem;
     min-height: 300px;
-    border: 1px solid rgba(0, 255, 157, 0.2);
+    border: 1px solid rgba(0, 255, 157, 0.3);
     overflow: hidden;
     transition: all 0.3s ease;
 }
@@ -71,7 +71,8 @@ header h1 {
 .feature-card:hover {
     transform: translateY(-5px);
     border-color: var(--primary);
-    box-shadow: 0 0 30px rgba(0, 255, 157, 0.2);
+    box-shadow: 0 0 30px rgba(0, 255, 157, 0.3);
+    background: rgba(16, 16, 23, 0.9);
 }
 
 .card-content {
@@ -154,5 +155,67 @@ header h1 {
 
     .features-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    background: #0a0a0a;
+}
+
+.lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(rgba(0, 255, 157, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 157, 0.1) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: moveLines 15s linear infinite;
+}
+
+.glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150%;
+    height: 150%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle at center, 
+        rgba(0, 255, 157, 0.1) 0%,
+        rgba(0, 255, 157, 0.05) 20%,
+        transparent 70%);
+    animation: pulse 8s ease-in-out infinite;
+}
+
+@keyframes moveLines {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(40px);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(0.8);
     }
 } 
