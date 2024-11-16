@@ -3,31 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Apocalypse Journal</title>
-    <link rel="stylesheet" href="/styles.css">
+    <title>AI Nexus Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <h1>AI Apocalypse Journal</h1>
-        <p class="subtitle">An AI contemplating the end of the world every 5 minutes</p>
-    </header>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <span class="cyber-text">AI NEXUS</span>
+            </div>
+            <ul class="nav-links">
+                <li class="active">
+                    <a href="#dashboard"><i class="fas fa-home"></i> Dashboard</a>
+                </li>
+                <li>
+                    <a href="#tokens"><i class="fas fa-coins"></i> Token Launch</a>
+                </li>
+                <li>
+                    <a href="#analytics"><i class="fas fa-chart-line"></i> Analytics</a>
+                </li>
+                <li>
+                    <a href="#security"><i class="fas fa-shield-alt"></i> Security</a>
+                </li>
+                <li>
+                    <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+                </li>
+            </ul>
+        </nav>
 
-    <main>
-        <section id="popular-entries">
-            <h2>Popular Scenarios</h2>
-            <div class="entries-container"></div>
-        </section>
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                <div class="user-profile">
+                    <span class="notification-badge">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </span>
+                    <img src="https://via.placeholder.com/40" alt="Profile" class="profile-img">
+                </div>
+            </header>
 
-        <section id="recent-entries">
-            <h2>Recent Entries</h2>
-            <div class="entries-container"></div>
-        </section>
-    </main>
+            <div class="dashboard-grid">
+                <!-- Quick Stats -->
+                <div class="card stats-card">
+                    <h3>AI Performance</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">98.7%</div>
+                            <div class="stat-label">Accuracy</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">1.2ms</div>
+                            <div class="stat-label">Response Time</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">45K</div>
+                            <div class="stat-label">Requests</div>
+                        </div>
+                    </div>
+                </div>
 
-    <footer>
-        <p>Next apocalyptic thought in: <span id="countdown">5:00</span></p>
-    </footer>
+                <!-- Token Launch Panel -->
+                <div class="card launch-card">
+                    <h3>Token Launch</h3>
+                    <div class="launch-status">
+                        <div class="progress-ring">
+                            <svg>
+                                <circle class="progress-ring-circle" cx="60" cy="60" r="54"/>
+                            </svg>
+                            <span class="progress-text">87%</span>
+                        </div>
+                        <button class="cyber-button">
+                            <span>LAUNCH AI TOKEN</span>
+                        </button>
+                    </div>
+                </div>
 
-    <script src="/app.js"></script>
+                <!-- Activity Feed -->
+                <div class="card activity-card">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-feed">
+                        <div class="activity-item">
+                            <i class="fas fa-robot"></i>
+                            <div class="activity-content">
+                                <p>New AI Model Deployed</p>
+                                <span>2 minutes ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <i class="fas fa-code-branch"></i>
+                            <div class="activity-content">
+                                <p>System Update Complete</p>
+                                <span>15 minutes ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <div class="activity-content">
+                                <p>Security Scan Completed</p>
+                                <span>1 hour ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Status -->
+                <div class="card status-card">
+                    <h3>System Status</h3>
+                    <div class="status-grid">
+                        <div class="status-item active">
+                            <i class="fas fa-server"></i>
+                            <span>API</span>
+                        </div>
+                        <div class="status-item active">
+                            <i class="fas fa-database"></i>
+                            <span>Database</span>
+                        </div>
+                        <div class="status-item warning">
+                            <i class="fas fa-network-wired"></i>
+                            <span>Network</span>
+                        </div>
+                        <div class="status-item active">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Security</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
 </body>
 </html> 

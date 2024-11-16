@@ -1,92 +1,53 @@
-class ApocalypseJournal {
-    constructor() {
-        this.popularContainer = document.querySelector('#popular-entries .entries-container');
-        this.recentContainer = document.querySelector('#recent-entries .entries-container');
-        this.countdownElement = document.getElementById('countdown');
-        this.countdown = 300; // 5 minutes in seconds
+document.addEventListener('DOMContentLoaded', () => {
+    // Progress Ring Animation
+    const circle = document.querySelector('.progress-ring-circle');
+    const radius = circle.r.baseVal.value;
+    const circumference = radius * 2 * Math.PI;
+    
+    circle.style.strokeDasharray = `${circumference} ${circumference}`;
+    
+    function setProgress(percent) {
+        const offset = circumference - (percent / 100 * circumference);
+        circle.style.strokeDashoffset = offset;
+    }
+    
+    // Animate to 87%
+    setProgress(87);
+
+    // Cyber button effect
+    const button = document.querySelector('.cyber-button');
+    button.addEventListener('mousemove', (e) => {
+        const rect = button.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
         
-        this.init();
-    }
+        button.style.setProperty('--x', `${x}px`);
+        button.style.setProperty('--y', `${y}px`);
+    });
 
-    async init() {
-        await this.loadEntries();
-        this.startCountdown();
-        this.startJournalGeneration();
-    }
+    // Add click animations to cards
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', function() {
+            this.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 100);
+        });
+    });
 
-    async loadEntries() {
-        try {
-            // Load popular entries
-            const popularResponse = await fetch('/api/entries/popular');
-            const popularEntries = await popularResponse.json();
-            this.renderEntries(popularEntries, this.popularContainer);
-
-            // Load recent entries
-            const recentResponse = await fetch('/api/entries/recent');
-            const recentEntries = await recentResponse.json();
-            this.renderEntries(recentEntries, this.recentContainer);
-        } catch (error) {
-            console.error('Failed to load entries:', error);
-        }
-    }
-
-    renderEntries(entries, container) {
-        container.innerHTML = entries.map(entry => `
-            <div class="entry" data-id="${entry.id}">
-                <div class="entry-timestamp">${new Date(entry.timestamp).toLocaleString()}</div>
-                <div class="entry-content">${entry.content}</div>
-                <div class="entry-votes">
-                    <button class="vote-button" onclick="journal.vote(${entry.id}, 1)">↑</button>
-                    <span class="vote-count">${entry.votes}</span>
-                    <button class="vote-button" onclick="journal.vote(${entry.id}, -1)">↓</button>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    async generateEntry() {
-        try {
-            const response = await fetch('/api/entries/generate', {
-                method: 'POST'
-            });
-            const newEntry = await response.json();
-            
-            // Add new entry to recent container
-            const entryElement = document.createElement('div');
-            entryElement.className = 'entry';
-            entryElement.innerHTML = this.renderEntries([newEntry], document.createElement('div'));
-            
-            this.recentContainer.insertBefore(entryElement, this.recentContainer.firstChild);
-        } catch (error) {
-            console.error('Failed to generate entry:', error);
-        }
-    }
-
-    startCountdown() {
-        this.countdown = 300; // Reset countdown to 5 minutes
-        this.updateCountdown();
-        this.countdownInterval = setInterval(this.updateCountdown.bind(this), 1000);
-    }
-
-    updateCountdown() {
-        const minutes = Math.floor(this.countdown / 60);
-        const seconds = this.countdown % 60;
-        this.countdownElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-        this.countdown--;
-        if (this.countdown < 0) {
-            clearInterval(this.countdownInterval);
-            this.generateEntry();
-            this.startCountdown();
-        }
-    }
-
-    startJournalGeneration() {
-        // Implement journal generation logic here
-    }
-
-    vote(entryId, vote) {
-        // Implement vote logic here
-    }
-}
-
-const journal = new ApocalypseJournal(); 
+    // Simulate real-time updates
+    setInterval(() => {
+        const statValues = document.querySelectorAll('.stat-value');
+        statValues.forEach(stat => {
+            const currentValue = parseFloat(stat.textContent);
+            const newValue = currentValue + (Math.random() - 0.5) * 2;
+            if (stat.textContent.includes('%')) {
+                stat.textContent = newValue.toFixed(1) + '%';
+            } else if (stat.textContent.includes('ms')) {
+                stat.textContent = newValue.toFixed(1) + 'ms';
+            } else {
+                stat.textContent = Math.round(newValue) + 'K';
+            }
+        });
+    }, 3000);
+}); 
