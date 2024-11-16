@@ -3,126 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Nexus Dashboard</title>
+    <title>AI Features Dashboard</title>
     <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="dashboard-container">
-        <!-- Sidebar -->
-        <nav class="sidebar">
-            <div class="logo">
-                <h1>AI NEXUS</h1>
+    <div class="dashboard">
+        <header>
+            <h1>AI NEXUS DASHBOARD</h1>
+        </header>
+
+        <main class="features-grid">
+            <!-- AI Token Launch -->
+            <div class="feature-card">
+                <div class="card-content">
+                    <i class="fas fa-coins"></i>
+                    <h2>AI Token Launch</h2>
+                    <p>Launch and manage your AI-powered tokens with advanced features.</p>
+                    <button class="cyber-button" onclick="location.href='/token-launch'">
+                        <span>Launch Tokens</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+                <div class="card-bg"></div>
             </div>
-            <ul class="nav-menu">
-                <li class="active"><a href="#"><i class="fas fa-home"></i>Dashboard</a></li>
-                <li><a href="#"><i class="fas fa-robot"></i>AI Models</a></li>
-                <li><a href="#"><i class="fas fa-coins"></i>Tokens</a></li>
-                <li><a href="#"><i class="fas fa-chart-line"></i>Analytics</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i>Settings</a></li>
-            </ul>
-        </nav>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <header class="top-bar">
-                <div class="search">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search...">
+            <!-- AI Trading Bot -->
+            <div class="feature-card">
+                <div class="card-content">
+                    <i class="fas fa-robot"></i>
+                    <h2>Trading Bot</h2>
+                    <p>Automated trading with advanced AI algorithms and real-time analytics.</p>
+                    <button class="cyber-button" onclick="location.href='/trading-bot'">
+                        <span>Start Trading</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
-                <div class="user-menu">
-                    <div class="notifications">
-                        <i class="fas fa-bell"></i>
-                        <span class="badge">3</span>
-                    </div>
-                    <div class="profile">
-                        <img src="https://via.placeholder.com/32" alt="Profile">
-                    </div>
-                </div>
-            </header>
+                <div class="card-bg"></div>
+            </div>
 
-            <div class="dashboard-grid">
-                <!-- Stats Overview -->
-                <div class="card stats-card">
-                    <h2>AI Performance</h2>
-                    <div class="stats">
-                        <div class="stat">
-                            <h3>98.7%</h3>
-                            <p>Accuracy</p>
-                        </div>
-                        <div class="stat">
-                            <h3>1.2ms</h3>
-                            <p>Response Time</p>
-                        </div>
-                        <div class="stat">
-                            <h3>45K</h3>
-                            <p>Requests</p>
-                        </div>
-                    </div>
+            <!-- AI Analytics -->
+            <div class="feature-card">
+                <div class="card-content">
+                    <i class="fas fa-chart-line"></i>
+                    <h2>AI Analytics</h2>
+                    <p>Deep insights and predictions powered by machine learning.</p>
+                    <button class="cyber-button" onclick="location.href='/analytics'">
+                        <span>View Analytics</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
+                <div class="card-bg"></div>
+            </div>
 
-                <!-- Token Launch -->
-                <div class="card launch-card">
-                    <h2>Token Launch</h2>
-                    <div class="launch-content">
-                        <div class="progress-circle">
-                            <span class="percentage">87%</span>
-                        </div>
-                        <button class="launch-btn">Launch Token</button>
-                    </div>
+            <!-- Smart Contracts -->
+            <div class="feature-card">
+                <div class="card-content">
+                    <i class="fas fa-file-contract"></i>
+                    <h2>Smart Contracts</h2>
+                    <p>Create and deploy AI-optimized smart contracts securely.</p>
+                    <button class="cyber-button" onclick="location.href='/smart-contracts'">
+                        <span>Deploy Now</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
-
-                <!-- Activity Feed -->
-                <div class="card activity-card">
-                    <h2>Recent Activity</h2>
-                    <div class="activity-list">
-                        <div class="activity-item">
-                            <i class="fas fa-robot"></i>
-                            <div>
-                                <p>New AI Model Deployed</p>
-                                <span>2 minutes ago</span>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <i class="fas fa-code"></i>
-                            <div>
-                                <p>System Update Complete</p>
-                                <span>15 minutes ago</span>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <i class="fas fa-shield-alt"></i>
-                            <div>
-                                <p>Security Check Passed</p>
-                                <span>1 hour ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- System Status -->
-                <div class="card status-card">
-                    <h2>System Status</h2>
-                    <div class="status-grid">
-                        <div class="status-item active">
-                            <i class="fas fa-server"></i>
-                            <span>API Services</span>
-                        </div>
-                        <div class="status-item active">
-                            <i class="fas fa-database"></i>
-                            <span>Database</span>
-                        </div>
-                        <div class="status-item warning">
-                            <i class="fas fa-network-wired"></i>
-                            <span>Network</span>
-                        </div>
-                        <div class="status-item active">
-                            <i class="fas fa-shield-alt"></i>
-                            <span>Security</span>
-                        </div>
-                    </div>
-                </div>
+                <div class="card-bg"></div>
             </div>
         </main>
     </div>
