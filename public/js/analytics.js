@@ -1,4 +1,4 @@
-const DUNE_API_KEY = 'YOUR_API_KEY'; // Replace with your Dune API key
+const DUNE_API_KEY = 'ur7vfGnQv0udOnanEUPfcI8nFMT4IieK'; // Replace with your Dune API key
 const DUNE_API_BASE = 'https://api.dune.com/api/v1';
 
 class DuneAPI {
